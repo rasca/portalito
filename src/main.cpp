@@ -10,6 +10,7 @@
 
 SensorArray sensorArray;
 Leds leds;
+Sonar sonar;
 
 void IRAM_ATTR sensorEcho() {
     sensorArray.echo();
@@ -37,5 +38,8 @@ void loop() {
     start = millis();
   }
 
-  leds.tick();
+  FastLED.clear();
+  // leds.tick();
+  sonar.tick();
+  FastLED.show();
 }
