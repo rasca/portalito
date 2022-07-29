@@ -29,14 +29,34 @@ void Leds::tick()
 
 #include <cmath>
 
+void paintColumn(int column, CRGB color)
+{
+    int segment = column / NUM_COLS_PER_SEGMENT;
+    int first_led = (column % NUM_COLS_PER_SEGMENT) * (NUM_COL_LEDS + NUM_EXTRA_BOTTOM_LEDS / 2);
+    if (column % 2 == 1) {
+        first_led += NUM_EXTRA_BOTTOM_LEDS / 2;
+    }
+    Serial.print(" column: ");
+    Serial.print(column);
+    Serial.print(" segment: ");
+    Serial.print(segment);
+    Serial.print(" first_led: ");
+    Serial.print(first_led);
+    Serial.print(" ");
+    for (int i=0; i< NUM_COL_LEDS; i++) {
+        segments[segment][i + first_led] = color;
+    }
+}
+
 void Sonar::setup() {}
 
 void Sonar::tick() {
     // advance the sonar angle based on speed
     unsigned long timestamp = millis();
-    angle = fmod((angle + (_lastTimestamp - timestamp) / (1.0 / speed)), 360.0);
+    angle = fmod((angle + (timestamp - _lastTimestamp) / (1.0 / speed)), 360.0);
     _lastTimestamp = timestamp;
-    Serial.print("angle: ");
+
+    Serial.print(" angle: ");
     Serial.print(angle);
 
     // redraw the sonar line
@@ -46,18 +66,13 @@ void Sonar::tick() {
     int second_column = (first_column + 1) % (NUM_COLS_PER_SEGMENT * NUM_SEGMENTS);
     double closeness = column_position - first_column;
 
-    Serial.print(" first column: ");
-    Serial.print(first_column);
-    Serial.print("   second column: ");
-    Serial.print(second_column);
-    Serial.print("   closeness: ");
-    Serial.println(closeness);
+    int intensity = doubleMap(closeness, 0, 1, 255, 0);
 
-    for (int i=0; i< NUM_COL_LEDS; i++) {
-        segments[first_column / NUM_COLS_PER_SEGMENT][i + (first_column % NUM_COLS_PER_SEGMENT) * (NUM_COL_LEDS + NUM_EXTRA_BOTTOM_LEDS)] = CHSV(85, 255, (int)doubleMap(1 - closeness, 0, 1, 0, 255));
-    }
-    for (int i=0; i< NUM_COL_LEDS; i++) {
-        segments[second_column / NUM_COLS_PER_SEGMENT][i + (second_column % NUM_COLS_PER_SEGMENT) * (NUM_COL_LEDS + NUM_EXTRA_BOTTOM_LEDS)] = CHSV(85, 255, (int)doubleMap(closeness, 0, 1, 0, 255));
-    }
+    Serial.print(" FIRST");
+    paintColumn(first_column, CHSV(85, 255, intensity));
+
+    Serial.print(" SECOND");
+    paintColumn(second_column, CHSV(85, 255, 255 - intensity));
+    Serial.println();
 
 }
