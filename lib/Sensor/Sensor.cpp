@@ -1,7 +1,7 @@
 using namespace std;
 #include <Sensor.h>
 
-#define DEBUG_SENSOR
+// #define DEBUG_SENSOR
 
 
 Sensor::Sensor(uint8_t pin) : pin(pin), newPing(pin, pin, MAX_DISTANCE) {
