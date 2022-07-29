@@ -6,7 +6,6 @@
 using namespace std;
 #include <list>
 
-#include <math.h>
 #include <NewPing.h>
 
 
@@ -46,44 +45,17 @@ class SensorArray
     list<Sensor> array;
     list<Sensor>::iterator currentSensor;
     bool reading = false;
+    void (*_callback)(); // function with no parameters that must call the array instance `echo()`
 
-    void setup();
+    void setup(void (*callback)());
     void add(Sensor sensor);
-    void ping(void (*callback)());
+    void ping();
     void echo();
     void next();
 
     // set timer
     // read sensor
     // goto next
-
-};
-
-class Filter
-{
-    unsigned long raw = 0;
-    double measurament;
-    double filtered = 0;
-    double level = 0;
-
-    int newValue(unsigned long value);
-
-private:
-    ///// First order filter /////
-    ///// and ignore first zeroes /////
-    const double alpha = 0.05;
-    const int zeroes_threshold = 15;
-    int zeroes_count = 0;
-
-    unsigned long startTime = 0;
-    int duration = 60;
-
-    ///// Higher output on closer distance /////
-    ///// multiplier * ln(MAX_DISTANCE/x) ////
-    ///// 40 * ln(200/cm) ////
-    const double multiplier = 40; // good results for 2m = 100 at 16cm
-
-    void printDebug();
 
 };
 

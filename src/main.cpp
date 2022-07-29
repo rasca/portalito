@@ -4,7 +4,8 @@
 // sensors pins
 // 32 33 25 26 27
 
-
+// light pins
+// 16 17 5 18 19
 
 SensorArray sensorArray;
 
@@ -20,40 +21,15 @@ void setup() {
   sensorArray.add(Sensor(27));
   sensorArray.add(Sensor(32));
   sensorArray.add(Sensor(33));
-  sensorArray.setup();
+  sensorArray.setup(sensorEcho);
 }
 
+unsigned long start = 0;
 
 void loop() {
-  // delay(100);
-  // Serial.print("s1 response: ");
-  // Serial.print(s1.ping_cm());
 
-  // delay(100);
-  // Serial.print(" s2 response: ");
-  // Serial.print(s2.ping_cm());
-
-  // delay(100);
-  // Serial.print(" s3 response: ");
-  // Serial.print(s3.ping_cm());
-
-  delay(100);
-  sensorArray.ping(sensorEcho);
-
-  // Serial.print("Ping response: ");
-  // unsigned int time = sensor.start_ping();
-  // Serial.println(time);
-  /*
-  if (millis() - start > 400) {
-    for (auto it = sensorArray.array.begin(); it != sensorArray.array.end(); ++it)
-    {
-      Serial.print(it->raw);
-      Serial.print(" ");
-    }
-    Serial.println();
-
-    sensorArray.pulse();
+  if (millis() - start > 20) {
+    sensorArray.ping();
     start = millis();
   }
-  */
 }
