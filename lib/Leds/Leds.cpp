@@ -12,7 +12,7 @@ void Leds::setup()
     // FastLED.addLeds<WS2812, GPIO_NUM_5>(segments[2].data(), NUM_LEDS);
     // FastLED.addLeds<WS2812, GPIO_NUM_18>(segments[3].data(), NUM_LEDS);
     // FastLED.addLeds<WS2812, GPIO_NUM_19>(segments[4].data(), NUM_LEDS);
-    FastLED.setBrightness(204);
+    FastLED.setBrightness(180);
 }
 
 void Leds::tick()
@@ -136,9 +136,10 @@ void paintCircle (int centerColumn, int centerRow, double distance) {
     // --> y = +- ((r^2 - x^2 * t(y) / a) * b)^(1/2)
 }
 
-void Sonar::setup() {}
+void Align::setup() {}
 
-void Sonar::tick() {
+void Align::tick()
+{
 
     paintPixel(0, 17, CRGB::Red);
     paintPixel(1, 17, CRGB::Red);
@@ -161,11 +162,14 @@ void Sonar::tick() {
     paintPixel(7, 35, CRGB::Blue);
     paintPixel(8, 35, CRGB::Blue);
     paintPixel(9, 35, CRGB::Blue);
+}
+
+void Sonar::setup() {}
+
+void Sonar::tick() {
     // advance the sonar angle based on speed
     unsigned long timestamp = millis();
-    previousAngle = angle;
     angle = fmod((angle + (timestamp - _lastTimestamp) / (1.0 / speed)), 360.0);
-    circularWaveAmplitude = (circularWaveAmplitude + (timestamp - _lastTimestamp) / (1.0 / circularWaveSpeed));
     _lastTimestamp = timestamp;
 
     // Serial.print(" angle: ");
@@ -182,27 +186,39 @@ void Sonar::tick() {
 
     // Serial.print(" FIRST ");
     // Serial.print(first_column);
-    // paintColumn(first_column, CHSV(85, 255, intensity));
+    paintColumn(first_column, CHSV(85, 255, intensity));
 
     // Serial.print(" SECOND ");
     // Serial.print(second_column);
-    // paintColumn(second_column, CHSV(85, 255, 255 - intensity));
+    paintColumn(second_column, CHSV(85, 255, 255 - intensity));
     // Serial.println();
 
-    // circular wave
+}
+
+void CircularWave::setup() {}
+
+void CircularWave::tick() {
+    // advance the sonar angle based on speed
+    unsigned long timestamp = millis();
+    previousAngle = angle;
+    angle = fmod((angle + (timestamp - _lastTimestamp) / (1.0 / angleSpeed)), 360.0);
+    amplitude = (amplitude + (timestamp - _lastTimestamp) / (1.0 / speed));
+    _lastTimestamp = timestamp;
+    Serial.println(angle);
+
     // a new cycle
     if (circularWave == false && angle < previousAngle)
     {
         circularWave = true;
-        circularWaveAmplitude = 0;
+        amplitude = 0;
     }
-    if (circularWaveAmplitude > circularWaveMaxAmplitude)
+    if (amplitude > maxAmplitude)
     {
         circularWave = false;
     }
     if (circularWave)
     {
-        paintCircle(5, 17, circularWaveAmplitude);
+        paintCircle(5, 17, amplitude);
     }
 
 }

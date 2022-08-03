@@ -11,6 +11,8 @@
 SensorArray sensorArray;
 Leds leds;
 Sonar sonar;
+CircularWave circularWave;
+Align align;
 
 void IRAM_ATTR sensorEcho() {
     sensorArray.echo();
@@ -39,7 +41,9 @@ void loop() {
   }
 
   FastLED.clear();
-  // leds.tick();
-  sonar.tick();
+  leds.tick();
+  // align.tick();
+  // sonar.tick();
+  // circularWave.tick();
   FastLED.show();
 }

@@ -23,14 +23,33 @@ class Leds {
     byte hue = 0;
 };
 
+class Align {
+    public:
+    void setup();
+    void tick();
+};
+
 class Sonar {
     public:
-    double speed = 0.03;
+    double speed = 0.3;
+    double angle = 0;
+
+    void setup();
+    void tick();
+
+    private:
+    unsigned long _lastTimestamp = 0;
+
+};
+
+class CircularWave {
+    public:
     double angle = 0;
     double previousAngle = 360;
 
-    float circularWaveMaxAmplitude = 5;
-    float circularWaveSpeed = 0.001;
+    float maxAmplitude = 5;
+    float speed = 0.01;
+    float angleSpeed = 0.1;
 
     void setup();
     void tick();
@@ -39,7 +58,7 @@ class Sonar {
     unsigned long _lastTimestamp = 0;
     // TODO: make it work for multiple segments
     bool circularWave = true;
-    float circularWaveAmplitude = 0;
+    float amplitude = 0;
 
 };
 
