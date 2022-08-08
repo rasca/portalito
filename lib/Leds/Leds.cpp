@@ -8,10 +8,10 @@ void Leds::setup()
     // LEDS
     // 16 17 5 18 19
     FastLED.addLeds<WS2812, GPIO_NUM_16>(segments[0].data(), NUM_LEDS);
-    // FastLED.addLeds<WS2812, GPIO_NUM_17>(segments[1].data(), NUM_LEDS);
-    // FastLED.addLeds<WS2812, GPIO_NUM_5>(segments[2].data(), NUM_LEDS);
-    // FastLED.addLeds<WS2812, GPIO_NUM_18>(segments[3].data(), NUM_LEDS);
-    // FastLED.addLeds<WS2812, GPIO_NUM_19>(segments[4].data(), NUM_LEDS);
+    FastLED.addLeds<WS2812, GPIO_NUM_17>(segments[1].data(), NUM_LEDS);
+    FastLED.addLeds<WS2812, GPIO_NUM_5>(segments[2].data(), NUM_LEDS);
+    FastLED.addLeds<WS2812, GPIO_NUM_18>(segments[3].data(), NUM_LEDS);
+    FastLED.addLeds<WS2812, GPIO_NUM_19>(segments[4].data(), NUM_LEDS);
     FastLED.setBrightness(180);
 }
 
@@ -58,7 +58,8 @@ void paintColumn(int column, CRGB color)
     }
 }
 
-void paintColumnPointMirrored(int centerColumn, int centerRow, float y, int columnOffset) {
+void paintColumnPointMirrored(int centerColumn, int centerRow, float y, int columnOffset)
+{
     // draw an interpolated pixel
     /*
     Serial.print("Painting Column Point Mirrored, y: ");
@@ -134,6 +135,18 @@ void paintCircle (int centerColumn, int centerRow, double distance) {
 
     // egg equation: : x^2 * t(y) / a  + y^2 / b = r2
     // --> y = +- ((r^2 - x^2 * t(y) / a) * b)^(1/2)
+}
+
+void paintExtra(int column, CRGB color)
+{
+    int segment = column / NUM_COLS_PER_SEGMENT;
+    int first_led = (column % NUM_COLS_PER_SEGMENT) * (NUM_COL_LEDS + NUM_EXTRA_BOTTOM_LEDS / 2);
+    if (column % 2 == 0) {
+        first_led += NUM_COL_LEDS;
+    }
+    for (int i=0; i< NUM_EXTRA_BOTTOM_LEDS / 2; i++) {
+        segments[segment][i + first_led] = color;
+    }
 }
 
 void Align::setup() {}

@@ -6,11 +6,11 @@
 #include <FastLED.h>
 #include <array>
 
-#define NUM_LEDS 500
-#define NUM_SEGMENTS 1
+#define NUM_LEDS 48
+#define NUM_SEGMENTS 5
 
-#define NUM_COL_LEDS 35
-#define NUM_EXTRA_BOTTOM_LEDS 30
+#define NUM_COL_LEDS 10
+#define NUM_EXTRA_BOTTOM_LEDS 4
 #define NUM_COLS_PER_SEGMENT (NUM_LEDS / (NUM_COL_LEDS * 2 + NUM_EXTRA_BOTTOM_LEDS) * 2)
 #define NUM_COLS (NUM_COLS_PER_SEGMENT * NUM_SEGMENTS)
 
@@ -31,7 +31,7 @@ class Align {
 
 class Sonar {
     public:
-    double speed = 0.3;
+    double speed = 0.03;
     double angle = 0;
 
     void setup();
@@ -61,5 +61,10 @@ class CircularWave {
     float amplitude = 0;
 
 };
+
+void paintPixel(int column, int row, CRGB color);
+void paintColumn(int column, CRGB color);
+void paintColumnPointMirrored(int centerColumn, int centerRow, float y, int columnOffset);
+void paintExtra(int column, CRGB color);
 
 #endif

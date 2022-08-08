@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <Sensor.h>
 #include <Leds.h>
+#include <Boa.h>
 
 // sensors pins
 // 32 33 25 26 27
@@ -13,6 +14,7 @@ Leds leds;
 Sonar sonar;
 CircularWave circularWave;
 Align align;
+Boa boa;
 
 void IRAM_ATTR sensorEcho() {
     sensorArray.echo();
@@ -41,9 +43,10 @@ void loop() {
   }
 
   FastLED.clear();
-  leds.tick();
+  // leds.tick();
   // align.tick();
-  // sonar.tick();
+  boa.tick();
+  sonar.tick();
   // circularWave.tick();
   FastLED.show();
 }
