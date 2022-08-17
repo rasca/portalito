@@ -2,6 +2,7 @@
 #include <Sensor.h>
 #include <Leds.h>
 #include <Boa.h>
+#include <Perla.h>
 
 // sensors pins
 // 32 33 25 26 27
@@ -15,6 +16,7 @@ Sonar sonar;
 CircularWave circularWave;
 Align align;
 Boa boa;
+Perla perla;
 
 void IRAM_ATTR sensorEcho() {
     sensorArray.echo();
@@ -46,7 +48,8 @@ void loop() {
   // leds.tick();
   // align.tick();
   boa.tick();
-  sonar.tick();
+  // sonar.tick();
+  perla.tick(sensorArray.array);
   // circularWave.tick();
   FastLED.show();
 }

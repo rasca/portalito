@@ -15,7 +15,7 @@ int Filter::newValue(unsigned long value)
         zeroes_count = 0;
     }
 
-    // clamp to MIN_DISTANCE
+    // clamp to MIN_DISTANCE, we need to do this before the next if's else
     if (measurament < MIN_DISTANCE && measurament > 0)
     {
         measurament = MIN_DISTANCE;

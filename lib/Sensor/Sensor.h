@@ -4,9 +4,9 @@
 // some code taken from: https://gist.github.com/WoLpH/0094b278a54f8f472c76b7eb0d0a8f89
 
 using namespace std;
-#include <list>
-
+#include <vector>
 #include <NewPing.h>
+#include <Filters.h>
 
 
 #define MAX_DISTANCE 200
@@ -17,6 +17,8 @@ class NewPingInterrupt : public NewPing {
 
     using NewPing::NewPing;
     unsigned long ping_cm(void (*callback)());
+    unsigned long distanceCm;
+    Filter filter;
     void echo();
     void stop();
 };
@@ -42,8 +44,8 @@ class SensorArray
 {
     public:
 
-    list<Sensor> array;
-    list<Sensor>::iterator currentSensor;
+    vector<Sensor> array;
+    vector<Sensor>::iterator currentSensor;
     bool reading = false;
     void (*_callback)(); // function with no parameters that must call the array instance `echo()`
 

@@ -12,6 +12,7 @@ void Leds::setup()
     FastLED.addLeds<WS2812, GPIO_NUM_5>(segments[2].data(), NUM_LEDS);
     FastLED.addLeds<WS2812, GPIO_NUM_18>(segments[3].data(), NUM_LEDS);
     FastLED.addLeds<WS2812, GPIO_NUM_19>(segments[4].data(), NUM_LEDS);
+    FastLED.setDither(0);
     FastLED.setBrightness(180);
 }
 

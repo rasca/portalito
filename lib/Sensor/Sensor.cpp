@@ -30,24 +30,26 @@ unsigned long NewPingInterrupt::ping_cm(void (*callback)())
     // Interrupt option
     attachInterrupt(digitalPinToInterrupt(_echoPin), callback, FALLING);
     // TODO: launch a timer to stop the reading
+    return 1;
 }
 
 void NewPingInterrupt::echo() {
     unsigned long echoTime = (micros() - (_max_time - _maxEchoTime) - PING_OVERHEAD); // Calculate ping time, include overhead.
-    unsigned long distanceCm = echoTime / US_ROUNDTRIP_CM;
+    distanceCm = echoTime / US_ROUNDTRIP_CM;
+    filter.newValue(distanceCm);
 
     detachInterrupt(digitalPinToInterrupt(_echoPin));
 
 #ifdef DEBUG_SENSOR
     Serial.print(distanceCm);
-    Serial.print("; ");
+    Serial.print("; \t");
 #endif
 }
 
 void NewPingInterrupt::stop() {
     detachInterrupt(digitalPinToInterrupt(_echoPin));
 #ifdef DEBUG_SENSOR
-    Serial.print("echo NO_ECHO");
+    Serial.print("NO; \t");
 #endif
 }
 

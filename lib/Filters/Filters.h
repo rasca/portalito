@@ -2,6 +2,7 @@
 #define FILTERS_H_INCLUDED
 
 #include <math.h>
+#include <Arduino.h>
 
 #define MAX_DISTANCE 200
 #define MIN_DISTANCE 16
@@ -9,6 +10,7 @@
 
 class Filter
 {
+public:
     unsigned long raw = 0;
     double measurament;
     double filtered = 0;
@@ -19,7 +21,7 @@ class Filter
 private:
     ///// First order filter /////
     ///// and ignore first zeroes /////
-    const double alpha = 0.05;
+    const double alpha = 0.2;
     const int zeroes_threshold = 15;
     int zeroes_count = 0;
 
